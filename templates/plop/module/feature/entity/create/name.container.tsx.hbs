@@ -1,0 +1,64 @@
+/**
+ *  Copyright (C) 2021, 2Smooth Digital Co. Ltd., all rights reserved
+ *  {{pascalCase name}}Create - Container
+ */
+
+import { type ReactElement, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Button, Input, Switch, Upload } from 'antd';
+import { useForm } from 'antd/lib/form/Form';
+
+import { APP_NAME, EnvDefinition } from 'src/environments';
+import type { NextPageWithLayout } from 'src/pages/_app';
+import { FormItemProps } from 'src/components/form/form.model';
+
+import Content from './{{kebabCase name}}-create.content';
+import type { {{pascalCase name}}CreateProps } from './{{kebabCase name}}-create.model';
+
+const {{pascalCase name}}Form = (props: FormItemProps) => [
+]
+
+const hiddenFields: Array<string> = [];
+
+const {{pascalCase name}}CreateContainer = (props: {{pascalCase name}}CreateProps.Container) => {
+
+  /** Hook section */
+  const router = useRouter();
+  const [ form ] = useForm();
+
+  useEffect(() => {
+    const { isReady, route, query, back } = router;
+    if(isReady) {
+      
+    }
+  }, [ router ]);
+
+  /** Functionality section */
+  const onSubmitForm = (values: any) => {
+    if( props?.onSubmitForm ){
+      props?.onSubmitForm(values)
+      return;
+    }
+    console.log(`Create`)
+    console.log(values)
+  }
+
+  return (
+    <Content
+      title='{{pascalCase name}}'
+      form={ props?.form || form }
+      fields={ {{pascalCase name}}Form }
+      disableFields={ props?.disableFields }
+      hiddenFields={ props?.hiddenFields || hiddenFields }
+      onSubmitForm={ props?.onSubmitForm || onSubmitForm }
+    />
+  );
+}
+
+
+{{pascalCase name}}CreateContainer.getNextHeadProps = {
+  title: `${ APP_NAME } | {{pascalCase name}}Create`,
+  description: '{{pascalCase name}}Create'
+}
+
+export default {{pascalCase name}}CreateContainer;

@@ -1,0 +1,30 @@
+/**
+ *  {{> license }}
+ *  {{pascalCase name}}CreateProps - Model
+ */
+
+import type { FormInstance } from 'antd';
+import type { EnvDefinition } from 'src/environments';
+import { FormItemProps } from 'src/components/form/form.model';
+
+export namespace {{pascalCase name}}CreateProps {
+  export interface Container {
+    disableFields?: Array<string>;
+    form?: FormInstance<any>;
+    onSubmitForm?: (value: any) => void;
+    hiddenFields?: Array<string>;
+  }
+
+  export interface Content extends State {
+      mode?: EnvDefinition.CrudMode;
+      title: string
+      form: FormInstance<any>;
+      fields: (props: any) => Array<FormItemProps>;
+      disableFields?: Array<string>;
+      onSubmitForm: (value: any) => void;
+      hiddenFields?: Array<string>;
+  }
+
+  export interface State {
+  }
+}

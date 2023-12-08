@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unai-tuh-web
+spec:
+  selector:
+    matchLabels:
+      app: unai-tuh-web
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: unai-tuh-web
+    spec:
+      containers:
+        - name: unai-tuh-web
+          image: registry.digitalocean.com/ratchasak/unai-tuh-web
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always
+          env:
+            - name: BUILD_TAG
+              value: "<BUILD_TAG>"
+            - name: NEXT_PUBLIC_APP_ENV
+              value: "uat"
+      imagePullSecrets:
+        - name: registry-ratchasak
+#      nodeSelector:
+#        app-node: "true"

@@ -1,0 +1,72 @@
+/**
+ *  Copyright (C) 2021, 2Smooth Digital Co. Ltd., all rights reserved
+ *  BannerEdit - Container
+ */
+
+import { type ReactElement, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
+import { APP_NAME, EnvDefinition } from 'src/environments';
+import type { NextPageWithLayout } from 'src/pages/_app';
+
+import { Input } from 'antd';
+import { useForm } from 'antd/lib/form/Form';
+import { {{pascalCase name}}Create } from '../create';
+
+const disableFields: Array<string> = []
+const hiddenFields: Array<string> = [];
+
+const {{pascalCase name}}EditContainer = () => {
+
+  /** Hook section */
+  const router = useRouter();
+  const [ form ] = useForm();
+
+  const [ id, setId ] = useState<string>('')
+  const [ data, setData ] = useState<any>()
+
+  useEffect(() => {
+    const { isReady, route, query, back } = router;
+    if(isReady) {
+      const { id } = query as { id: string };
+      if(id) {
+        setId(id)
+      }
+    }
+  }, [ router ]);
+
+  useEffect(() => {
+    if(id) {
+      callService()
+    }
+  }, [id])
+
+  /** Functionality section */
+  const callService = async () => {
+    //setData(data)
+    //form.setFieldsValue({ ...data })
+  }
+
+  const onSubmitForm = (values: any) => {
+    console.log(`Update`)
+    console.log(values)
+  }
+
+  return (
+    <{{pascalCase name}}Create
+      form={form}
+      disableFields={disableFields}
+      hiddenFields={hiddenFields}
+      onSubmitForm={onSubmitForm}
+    />
+  );
+}
+
+
+{{pascalCase name}}EditContainer.getNextHeadProps = {
+  title: `${ APP_NAME } | {{pascalCase name}}Edit`,
+  description: '{{pascalCase name}}Edit'
+}
+
+export default {{pascalCase name}}EditContainer;
+export { {{pascalCase name}}EditContainer };

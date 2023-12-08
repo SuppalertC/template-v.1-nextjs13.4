@@ -1,0 +1,139 @@
+/**
+ *  {{> license }}
+ *  {{pascalCase name}} - Container
+ */
+
+import { type ReactElement, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+{{#if (isEquals category "LOGIN") ~}}
+import { Layout, Form } from 'antd';
+{{/if}}
+
+{{#if (isEquals category "LOGIN") ~}}
+import { LayoutBody } from 'src/components';
+{{/if}}
+{{#if (isEquals type "LIST")}}
+import type { InputSearchSubmission } from 'src/components';
+{{/if}}
+import { APP_NAME } from 'src/environments';
+import type { NextPageWithLayout } from 'src/pages/_app';
+{{#if (isEquals type "LIST")}}
+import { getSessionItem } from 'src/services/web-session-storage';
+{{/if}}
+
+import Content from './{{kebabCase name}}.content';
+import type { {{pascalCase name}}Props } from './{{kebabCase name}}.model';
+{{#if withService ~}}
+// import {} from './{{kebabCase name}}.service';
+{{/if}}
+
+const {{pascalCase name}}Container: NextPageWithLayout<{{pascalCase name}}Props.Container> = (/* props: {{pascalCase name}}Props.Container */): ReactElement => {
+  /** Hook section */
+  {{#if (isEquals type "LIST")}}
+  const [ page, setPage ] = useState(1);
+  const [ pageSize, setPageSize ] = useState(10);
+  {{/if}}
+  {{#if (isEquals type "CRUD")}}
+  const [ mode, setMode ] = useState<AppCrudMode>('VIEW');
+  {{/if}}
+  {{#if (isEquals category "LOGIN")}}
+  const [ loginForm ] = Form.useForm<{{pascalCase name}}Props.LoginFormDataFields>();
+  {{/if}}
+  const router = useRouter();
+
+  {{#if (isEquals category "BLANK")}}
+  useEffect(() => {}, []);
+
+  {{/if}}
+  {{#if (isEquals category "LOGIN")}}
+  useEffect(() => {}, []);
+
+  {{/if}}
+  {{#if (isEquals type "LIST")}}
+  useEffect(() => {
+    const sharedPageSize = getSessionItem<number>({ name: 'shared-table-page-size' });
+    if(sharedPageSize && !Number.isNaN(sharedPageSize)) {
+      setPageSize(sharedPageSize);
+    }
+  }, []);
+
+  {{/if}}
+  {{#if (isEquals type "CRUD")}}
+  useEffect(() => {
+    const { isReady, route, query, back } = router;
+    if(isReady) {
+      const { id } = query as { id: string };
+      const _id = Number.parseInt(id);
+      if(_id && !Number.isNaN(_id)) {}
+      switch(route) {
+        default: {
+          back();
+          break;
+        }
+      }
+    }
+  }, [ router ]);
+
+  {{/if}}
+  /** Functionality section */
+  {{#if (isEquals category "LOGIN")}}
+  const onSubmitForm = (values: {{pascalCase name}}Props.LoginFormDataFields) => {
+    // const {} = values;
+  }
+  {{/if}}
+  {{#if (isEquals type "LIST")}}
+  const onSearch = (args: InputSearchSubmission) => {
+    //
+  }
+
+  const onClickAdd = () => {
+    //
+  }
+
+  const onClickEdit = (id: number) => {
+    //
+  }
+  
+  const onClickRemove = (id: number) => {
+    //
+  }
+
+  const onChangePage = (changedPage: number) => { setPage(changedPage); }
+  const onChangePageSize = (changedPageSize: number) => { setPageSize(changedPageSize); }
+  {{/if}}
+
+  return (
+    <Content
+      {{#if (isEquals type "LIST")}}
+      page={ page }
+      pageSize={ pageSize }
+
+      onSearch={ onSearch }
+      onClickAdd={ onClickAdd }
+      onClickEdit={ onClickEdit }
+      onClickRemove={ onClickRemove }
+      onChangePage={ onChangePage }
+      onChangePageSize={ onChangePageSize }
+      {{/if}}
+      {{#if (isEquals category "LOGIN")}}
+      loginForm={ loginForm }
+      onSubmitForm={ onSubmitForm }
+      {{/if}}
+    />
+  );
+}
+
+{{#if (isEquals category "LOGIN")}}
+{{pascalCase name}}Container.getLayout = (page) => (
+  <Layout>
+    <LayoutBody>{ page }</LayoutBody>
+  </Layout>
+);
+{{/if}}
+
+{{pascalCase name}}Container.getNextHeadProps = {
+  title: `${ APP_NAME } | {{pascalCase name}}`,
+  description: '{{pascalCase name}}'
+}
+
+export default {{pascalCase name}}Container;

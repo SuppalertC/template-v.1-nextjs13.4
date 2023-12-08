@@ -1,0 +1,53 @@
+/**
+ *  {{> license }}
+ *  {{pascalCase name}} - Model
+ */
+
+{{#if (isEquals category "LOGIN") ~}}
+import type { FormInstance } from 'antd';
+{{/if}}
+{{#if (isEquals type "LIST") ~}}
+import type { InputSearchSubmission } from 'src/components/input-search/input-search.model';
+{{/if}}
+{{#if (isEquals type "CRUD") ~}}
+import type { EnvDefinition } from 'src/environments';
+{{/if}}
+
+export namespace {{pascalCase name}}Props {
+  export interface Container {}
+
+  export interface Content extends State {
+    {{#if (isEquals type "LIST")}}
+    onSearch: (params: InputSearchSubmission) => void;
+    onClickAdd: () => void;
+    onClickEdit: (id: number) => void;
+    onClickRemove: (id: number) => void;
+    onChangePage: (changedPage: number) => void;
+    onChangePageSize: (changedPageSize: number) => void;
+    {{/if}}
+    {{#if (isEquals type "CRUD")}}
+    mode: EnvDefinition.CrudMode;
+    form: FormInstance<any>;
+    fields: Array<any>;
+    onSubmitForm: (value: any) => void;
+    {{/if}}
+    {{#if (isEquals category "LOGIN")}}
+    loginForm: FormInstance<LoginFormDataFields>;
+
+    onSubmitForm: (values: LoginFormDataFields) => void;
+    {{/if}}
+  }
+
+  export interface State {
+    {{#if (isEquals type "LIST")}}
+    page: number;
+    pageSize: number;
+    {{/if}}
+  }
+  {{#if (isEquals category "LOGIN")}}
+
+  export interface LoginFormDataFields {
+    //
+  }
+  {{/if}}
+}

@@ -1,0 +1,49 @@
+{
+  "extends": ["eslint:recommended", "next/core-web-vitals"],
+  "plugins": ["@typescript-eslint"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "ignorePatterns": [
+    ".git/",
+    ".github/",
+    ".next/",
+    "node_modules/",
+    "public/",
+    "**/*.spec.ts",
+    "e2e/",
+    "**/*.graphql",
+    "./src/services/api/",
+    "templates/"
+  ],
+  "rules": {
+    "@next/next/no-sync-scripts": "off",
+    "for-direction": "error",
+    "no-await-in-loop": "error",
+    "no-constant-condition": "error",
+    "no-delete-var": "error",
+    "no-eval": "error",
+    "no-extra-semi": "error",
+    "no-var": "error",
+    "no-useless-escape": "warn",
+    "no-unused-vars": "off",
+    "no-empty": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "arrow-body-style": "off",
+    "array-bracket-spacing": ["warn", "always"],
+    "arrow-parens": ["warn", "always"],
+    "arrow-spacing": "error",
+    "block-spacing": "error",
+    "brace-style": ["warn", "stroustrup", { "allowSingleLine": true }],
+    "curly": "warn",
+    "comma-dangle": ["error", "only-multiline"],
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "eqeqeq": "warn",
+    "indent": ["warn", 2, { "SwitchCase": 1 }],
+    "jsx-quotes": ["warn", "prefer-single"],
+    "object-curly-spacing": ["warn", "always"],
+    "valid-typeof": "warn"
+  }
+}

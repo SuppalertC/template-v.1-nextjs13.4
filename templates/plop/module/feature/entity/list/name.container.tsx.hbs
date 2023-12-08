@@ -1,0 +1,141 @@
+/**
+ *  Copyright (C) 2021, 2Smooth Digital Co. Ltd., all rights reserved
+ *  {{pascalCase name}}List - Container
+ */
+
+import { type ReactElement, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { ColumnsType } from 'antd/es/table';
+import { Form, Space, Switch } from 'antd';
+import Link from 'next/link';
+
+import { APP_NAME } from 'src/environments';
+import type { NextPageWithLayout } from 'src/pages/_app';
+import { getSessionItem } from 'src/services/web-session-storage';
+
+import Content from './{{kebabCase name}}-list.content';
+import type { {{pascalCase name}}ListProps } from './{{kebabCase name}}-list.model';
+import { InputSearchProps, Table } from 'src/components';
+import { FormItemProps } from 'src/components/form/form.model';
+import { CrudQuery } from 'src/services/crud-types';
+import ListTable from 'src/components/list-table';
+
+const filters: Array<FormItemProps> = [
+]
+
+const columns: ColumnsType<any> = [
+]
+
+const filterScopes: Array<InputSearchProps.FieldScope> = [
+]
+
+const defaultCrudQuery: CrudQuery<any> = {
+  orderBy: [{ createdAt: 'desc' } ]
+}
+
+const createLink = '{{kebabCase name}}/create'
+
+const {{pascalCase name}}ListContainer = (props: {{pascalCase name}}ListProps.Container) => {
+  
+  /** Hook section */
+  const router = useRouter();
+
+  const [form] = Form.useForm();
+  const [scopes, setScopes] = useState<Array<InputSearchProps.Scope>>([]);
+
+  const [ page, setPage ] = useState(1);
+  const [ pageSize, setPageSize ] = useState(10);
+  const [ crudQuery, setCrudQuery ] = useState<CrudQuery<any>>();
+  const [ dataSource, setDataSource ] = useState<Array<any>>([]);
+
+  useEffect(() => {
+    const sharedPageSize = getSessionItem<number>({ name: 'shared-table-page-size' });
+    if(sharedPageSize && !Number.isNaN(sharedPageSize)) {
+      setPageSize(sharedPageSize);
+    }
+    callService()
+  }, []); 
+  const callService = async () => {
+    setCrudQuery(defaultCrudQuery)
+  }
+
+  /** Functionality section */
+  const onSearch = async (args: InputSearchProps.Submission) => {
+    //
+    console.log(`args`, args)
+
+    const conditions = args.scope.map( (scope: InputSearchProps.Scope) => {
+      return ({
+        [scope.toString()] : filterScopes.filter( s => s.value == scope.toString() )[0].valueType === 'number' ? parseInt(args.text) : args.text
+      })
+    } )
+
+    let crudQuery: CrudQuery<any> = {}
+    if(args.text){
+      crudQuery = {
+        where: {
+          OR : [
+            ...conditions
+          ]
+        }
+      }
+    }
+    setCrudQuery({ ...crudQuery, ...defaultCrudQuery})
+  }
+
+  const onClickAdd = () => {
+    //
+  }
+
+  const onClickEdit = (id: number) => {
+    //
+  }
+  
+  const onClickRemove = (id: number) => {
+    //
+  }
+
+  const onChangePage = (changedPage: number) => { setPage(changedPage); }
+  const onChangePageSize = (changedPageSize: number) => { setPageSize(changedPageSize); }
+
+  const onClearSearch = () => {
+    form?.resetFields()
+    setCrudQuery({...defaultCrudQuery})
+  }
+  const onSubmitSearch = (values: any) => {
+
+  }
+
+  return (
+    <ListTable
+      title={ '{{pascalCase name}}' }
+      page={ page }
+      pageSize={ pageSize }
+      columns={ columns }
+      dataSource={ dataSource }
+      createLink={ createLink }
+
+      filters={ filters }
+      form={ form }
+      onSubmitSearch={ onSubmitSearch }
+      onClearSearch={ onClearSearch }
+
+      scopes={ filterScopes }
+      setScopes={ setScopes }
+
+      onSearch={ onSearch }
+      onClickAdd={ onClickAdd }
+      onClickRemove={ onClickRemove }
+      onChangePage={ onChangePage }
+      onChangePageSize={ onChangePageSize }
+    />
+  );
+}
+
+
+{{pascalCase name}}ListContainer.getNextHeadProps = {
+  title: `${ APP_NAME } | {{pascalCase name}}List`,
+  description: '{{pascalCase name}}List'
+}
+
+export default {{pascalCase name}}ListContainer;
